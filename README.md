@@ -1,19 +1,19 @@
 # Repo for Evolve Front End Code Reviews
 4/7/2021 - Review
 Component: buildSinglePricesComponent
-Assignments:
 
-HTML/CSS
+Assignments:
+# HTML/CSS
 All Lines: 
 David Manhardt
 Artem Hamzin
 
-Javascript 
+# Javascript 
 Lines 1-90
 Alex Popov
 Anton Kozhemyakin
 
-Javascript 
+# Javascript 
 Lines 91 - 183
 Ilya Toloknov
 Bobby Gallahue
