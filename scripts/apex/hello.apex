@@ -8,5 +8,6 @@ update new Listing__c(
     Min_Price__c = 100
 );
 
-// Log in as user 'Logan Lagesse'
-// Navigate to the Listing you updated with the above Anonymous Apex
+// Log in as user 'Logan Lagesse' or 'Brian Rathbun' or 'Alex Carroll' (All are EVRN Performance Users)
+// Navigate to the specific Listing you just updated with the above Anonymous Apex
+// The 'Build Pricing' button launches the component
