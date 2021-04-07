@@ -1,0 +1,78 @@
+/**
+ * Created by Artem Hamzin on 12.03.2020.
+ */
+.slds-grid{
+    display: flex;
+    flex-direction: column;
+}
+.card-row__between{
+    display: flex;
+    justify-content: space-between;
+}
+.card-row__around{
+    display: flex;
+    justify-content: space-around;
+}
+.last-update{
+    bottom: 5px;
+    right: 5px;
+    font-style: italic;
+}
+.custom-loading-text {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    white-space: nowrap;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+.slds-spinner {
+    top: 30%;
+}
+.status-display{
+    background-color: #999999;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+.flex-align-center{
+    align-items: center;
+}
+.history-tracking{
+    border-top: 1px solid rgb(221, 219, 218);
+    max-height: 350px;
+    overflow-y: auto;
+    text-align: left;
+}
+.status-display_succeeded{
+    background-color: #7ab648;
+}
+.status-display_failed{
+    background-color: #c92d39;
+}
+.status-display_info{
+    background-color: #dcc414;
+}
+.slds-spinner:after,
+.slds-spinner:before,
+.slds-spinner__dot-a:after,
+.slds-spinner__dot-a:before,
+.slds-spinner__dot-b:after,
+.slds-spinner__dot-b:before{
+    background-color: #575757;
+}
+.slds-spinner_container {
+    background-color: rgba(242, 242, 242, 0.85);
+}
+@keyframes animation-texture-frames {
+    0%   {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 64px 0;
+    }
+}
+.animation-texture{
+    animation: animation-texture-frames 1s linear infinite;
+}
