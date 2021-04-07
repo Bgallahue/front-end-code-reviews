@@ -16,6 +16,7 @@ Anton Kozhemyakin
 
 # Javascript (Lines 91 - 183) 
 Ilya Toloknov
+
 Bobby Gallahue
 
 Instructions: In this repo the 'hello.apex' file (In scripts > apex) contains steps to set up a Listing so you can view this component in an Org
