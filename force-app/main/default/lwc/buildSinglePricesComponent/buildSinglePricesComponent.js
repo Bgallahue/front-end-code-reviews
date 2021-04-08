@@ -164,17 +164,13 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     get isInProgress(){
         return this.inProgress;
     }
-    get statusClass(){
-        console.log('###')
-        if (COMPLETED_STATUSES.includes(this.status) ){
-            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_succeeded';
-        }
-        if (FAILED_STATUSES.includes(this.status)){
-            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_failed';
-        }
-        if (IN_PROCESS_STATUSES.includes(this.status)){
-            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_info animation-texture';
-        }
-        return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display ';
+    get statusClass() {
+        return [
+            'slds-box slds-p-vertical_large slds-theme_alert-texture',
+            'build-single-prices_status',
+            COMPLETED_STATUSES.includes(this.status) ? 'build-single-prices_succeeded' : '',
+            FAILED_STATUSES.includes(this.status) ? 'build-single-prices_failed' : '',
+            IN_PROCESS_STATUSES.includes(this.status) ? 'build-single-prices_info build-single-prices_animation-texture' : ''
+        ].join(' ');
     }
 }
