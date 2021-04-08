@@ -15,19 +15,19 @@
                     <lightning-button 
                         variant="neutral"
                         label="Back to Listing"
-                        onclick={backToListing}
+                        onclick={handleBackToListing}
                     ></lightning-button>
                     <lightning-button
                         label="Build Prices"
                         variant="brand"
-                        onclick={buildPricesStart}
-                        disabled={isStartBtnDisabled}
+                        onclick={handleStart}
+                        disabled={isStartButtonDisabled}
                     ></lightning-button>
                 </div>
             </div>
 
             <div class="slds-text-body_small slds-text-color_weak slds-text-align_right slds-m-bottom_small build-single-prices_last-update">
-                Last Price Updated DateTime: {LastPricesModificationDate}
+                Last Price Updated DateTime: {lastPricesUpdatedDate}
             </div>
 
         </article>

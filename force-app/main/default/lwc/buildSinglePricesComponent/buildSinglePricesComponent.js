@@ -1,4 +1,4 @@
-import {LightningElement, track, api, wire} from 'lwc';
+import { LightningElement, track, api, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import APEX_getLastPricesModificationDate from '@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate';
 import APEX_getInitialStatus from '@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus';
@@ -17,18 +17,16 @@ const FAILED_STATUSES = ['Error', 'Aborted', STATUS_FAILED];
 export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement)  {
     @api recordId;
 
+    // template data
+    status = 'Press "Build Prices" button to start process.';
+    statusMessage = '';
+    lastPricesUpdatedDate = '';
+    isStartButtonDisabled = false;
+    isInProgress = true;
+
+    // service trackers
     refresher = 0;
-
-    loadingMessage = 'Loading Component';
-    lastPricesUpdateDate = '';
-
-    status = 'Press "Build Prices" button to start process.'; //display job status
-    statusMessage = ''; //full info
-    startBtnDisabled = false;
-
     jobStartedAt = null;
-
-    inProgress = true;
 
     $ = {
         inited: false
@@ -58,8 +56,8 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 this.status = data;
                 this.statusMessage = '';
                 if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)){
-                    this.inProgress = false;
-                    this.startBtnDisabled = false;
+                    this.isInProgress = false;
+                    this.isStartButtonDisabled = false;
                     clearInterval(this.updateTimer.timer);
                     this.refresher = 0;
                 }
@@ -71,13 +69,13 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
         }
     };
 
-    buildPricesStart(){
+    handleStart(){
         this.statusMessage = '';
         this.startBuildingPrices();
-        this.startBtnDisabled = true;
+        this.isStartButtonDisabled = true;
     }
 
-    backToListing(){
+    handleBackToListing(){
         window.history.back();
     }
 
@@ -87,7 +85,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
         })
             .then(result => {
                 console.debug('GetLastPricesModificationDateResult -> ', result);
-                this.lastPricesUpdateDate = result;
+                this.lastPricesUpdatedDate = result;
             })
             .catch(error => {
                 console.log('GetLastPricesModificationDateError -> ', error);
@@ -103,7 +101,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 console.debug('GetInitialStatusResult -> ', result);
 
                 if (result !== STATUS_READY){
-                    this.startBtnDisabled = true;
+                    this.isStartButtonDisabled = true;
 
                     this.updateStatus();
                     this.status = result;
@@ -113,9 +111,9 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 console.log('GetInitialStatusError -> ', error);
                 this.statusMessage = error.body.message;
                 this.status = STATUS_FAILED;
-                this.startBtnDisabled = true;
+                this.isStartButtonDisabled = true;
             }).finally(() => {
-            this.inProgress = false;
+            this.isInProgress = false;
         })
     }
 
@@ -138,14 +136,13 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 this.status = STATUS_FAILED;
             })
             .finally(() => {
-                this.inProgress = false;
+                this.isInProgress = false;
             })
     }
 
     updateStatus() {
         this.updateTimer.timer = setInterval( () => {
             this.refresher++;
-            // this.getCurrentJobStatus();
         }, this.updateTimer.timeoutSeconds);
     }
 
@@ -153,17 +150,6 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     // getters
     //
 
-    get LastPricesModificationDate(){
-        return this.lastPricesUpdateDate;
-    }
-
-    get isStartBtnDisabled(){
-        return this.startBtnDisabled;
-    }
-
-    get isInProgress(){
-        return this.inProgress;
-    }
     get statusClass() {
         return [
             'slds-box slds-p-vertical_large slds-theme_alert-texture',

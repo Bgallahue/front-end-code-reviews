@@ -6,6 +6,7 @@
 .build-single-prices_status {
     background-color: #999999;
     color: white;
+    text-align: center;
 }
 .build-single-prices_succeeded {
     background-color: #7ab648;
