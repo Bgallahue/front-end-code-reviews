@@ -38,11 +38,12 @@ export default class BuildSinglePricesComponent extends LightningElement {
 
     get statusClass() {
         return [
-            'slds-box slds-p-vertical_large slds-theme_alert-texture',
-            'build-single-prices_status',
-            COMPLETED_STATUSES.includes(this.status) ? 'build-single-prices_succeeded' : '',
-            FAILED_STATUSES.includes(this.status) ? 'build-single-prices_failed' : '',
-            IN_PROCESS_STATUSES.includes(this.status) ? 'build-single-prices_info build-single-prices_animation-texture' : ''
+            'slds-box slds-p-vertical_large',
+            'slds-theme_info slds-theme_alert-texture',
+            'slds-text-align_center',
+            COMPLETED_STATUSES.includes(this.status) ? 'slds-theme_success' : '',
+            FAILED_STATUSES.includes(this.status) ? 'slds-theme_error' : '',
+            IN_PROCESS_STATUSES.includes(this.status) ? 'slds-theme_warning build-single-prices_animation-texture' : ''
         ].join(' ');
     }
 

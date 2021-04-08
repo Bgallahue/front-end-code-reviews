@@ -3,21 +3,6 @@
 }
 
 
-.build-single-prices_status {
-    background-color: #999999;
-    color: white;
-    text-align: center;
-}
-.build-single-prices_succeeded {
-    background-color: #7ab648;
-}
-.build-single-prices_failed {
-    background-color: #c92d39;
-}
-.build-single-prices_info {
-    background-color: #dcc414;
-}
-
 @keyframes animation-texture-frames {
     0%   {
         background-position: 0 0;
