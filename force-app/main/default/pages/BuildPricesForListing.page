@@ -1,0 +1,22 @@
+<apex:page standardController="Listing__c" extensions="SmartRatesEnrollmentController" contentType="text/html" docType="html-5.0" showQuickActionVfHeader="false" >
+    <apex:slds />
+    <apex:includeLightning />
+
+    <div id='lwcBuildPricesContainer'></div>
+
+    <script>
+        $Lightning.use('c:buildSinglePricesLWCDependency', function () {
+            $Lightning.createComponent(
+                'c:buildSinglePricesComponent',
+                {
+                    'listing_id': "{!listingId}",
+                    'user_id': '{!$User.Id}'
+                },
+                'lwcBuildPricesContainer',
+                function () {}
+            );
+        });
+
+    </script>
+
+</apex:page>
