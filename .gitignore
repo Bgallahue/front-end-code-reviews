@@ -9,6 +9,7 @@
 # LWC VSCode autocomplete
 **/lwc/jsconfig.json
 
+
 # LWC Jest coverage reports
 coverage/
 
@@ -36,3 +37,4 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
+force-app/main/default/lwc/.eslintrc.json
