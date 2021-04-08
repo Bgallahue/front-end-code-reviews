@@ -1,9 +1,9 @@
 import {LightningElement, track, api, wire} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
-import getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
-import startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
-import getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
+import APEX_getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
+import APEX_getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
+import APEX_startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
+import APEX_getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
@@ -49,7 +49,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     // methods
     //
 
-    @wire(getCurrentJobStatus, { listingId: '$recordId', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
+    @wire(APEX_getCurrentJobStatus, { listingId: '$recordId', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
     wiresJobStatus({ error, data }) {
         if (data) {
             if (this.refresher > 0){
@@ -80,7 +80,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     }
 
     getLastPricesModificationDate() {
-        getLastPricesModificationDate({
+        APEX_getLastPricesModificationDate({
             listingId: this.recordId
         })
             .then(result => {
@@ -93,7 +93,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     }
 
     getInitialStatus(){
-        getInitialStatus({
+        APEX_getInitialStatus({
             listingId: this.recordId,
             jobName: 'Single Listing Build Prices'
         })
@@ -119,7 +119,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     }
 
     startBuildingPrices() {
-        startBuildingPrices({
+        APEX_startBuildingPrices({
             listingId: this.recordId
         })
             .then(result => {
