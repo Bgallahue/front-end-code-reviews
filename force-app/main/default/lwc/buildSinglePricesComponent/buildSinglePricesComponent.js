@@ -32,11 +32,6 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     refresher = 0;
     jobStartedAt = null;
 
-    $ = {
-        inited: false
-    }
-
-
 
     //
     // GETTERS
@@ -58,10 +53,8 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     //
 
     connectedCallback() {
-        if (this.$.inited) return;
         this.getLastPricesModificationDate();
         this.getInitialStatus();
-        this.$.inited = true;
     }
 
 
