@@ -12,14 +12,9 @@
         if:true={isInProgress}
         type="absolute"
       ></c-loading-spinner>
-      <div
-        class="slds-is-absolute last-update slds-text-body_small slds-text-color_weak"
-      >
-        Last Price Updated DateTime: {LastPricesModificationDate}
-      </div>
-      <div class="slds-size_1-of-1 slds-large-size_2-of-3 slds-grid">
+      <div class="slds-p-around_medium">
         <div class={statusClass}>{status} {statusMessage}</div>
-        <div class="card-row__between slds-p-top_medium">
+        <div class="slds-grid slds-grid_align-spread slds-p-top_medium">
           <lightning-button
             variant="neutral"
             label="Back to Listing"
@@ -33,6 +28,11 @@
             onclick={buildPricesStart}
             disabled={isStartBtnDisabled}
           ></lightning-button>
+        </div>
+        <div
+          class="slds-text-body_small slds-text-color_weak slds-text-align_right slds-p-top_medium"
+        >
+          Last Price Updated DateTime: {LastPricesModificationDate}
         </div>
       </div>
     </lightning-card>
