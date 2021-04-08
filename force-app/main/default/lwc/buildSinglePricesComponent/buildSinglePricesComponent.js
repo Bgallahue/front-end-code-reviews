@@ -1,7 +1,3 @@
-/**
- * Created by Artem Hamzin on 13.03.2020.
- */
-
 import {LightningElement, track, api, wire} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
@@ -11,13 +7,13 @@ import getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
+
 const COMPLETED_STATUSES = ['Completed'];
 const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding',  'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
 const FAILED_STATUSES = ['Error', 'Aborted', 'Failed'];
 
-export default class BuildSinglePricesComponent extends  NavigationMixin(LightningElement)  {
-    @api listing_id;
-    @api user_id;
+export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement)  {
+    @api recordId;
 
     refresher = 0;
 
@@ -53,7 +49,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
     // methods
     //
 
-    @wire(getCurrentJobStatus, { listingId: '$listing_id', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
+    @wire(getCurrentJobStatus, { listingId: '$recordId', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
     wiresJobStatus({ error, data }) {
         if (data) {
             if (this.refresher > 0){
@@ -85,7 +81,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
 
     getLastPricesModificationDate() {
         getLastPricesModificationDate({
-            listingId: this.listing_id
+            listingId: this.recordId
         })
             .then(result => {
                 console.debug('GetLastPricesModificationDateResult -> ', result);
@@ -98,7 +94,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
 
     getInitialStatus(){
         getInitialStatus({
-            listingId: this.listing_id,
+            listingId: this.recordId,
             jobName: 'Single Listing Build Prices'
         })
             .then(result => {
@@ -124,7 +120,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
 
     startBuildingPrices() {
         startBuildingPrices({
-            listingId: this.listing_id
+            listingId: this.recordId
         })
             .then(result => {
                 console.debug('StartBuildingPricesResult -> ', result);

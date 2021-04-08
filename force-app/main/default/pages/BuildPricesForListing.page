@@ -9,14 +9,12 @@
             $Lightning.createComponent(
                 'c:buildSinglePricesComponent',
                 {
-                    'listing_id': "{!listingId}",
-                    'user_id': '{!$User.Id}'
+                    recordId: "{!listingId}"
                 },
                 'lwcBuildPricesContainer',
                 function () {}
             );
         });
-
     </script>
 
 </apex:page>
