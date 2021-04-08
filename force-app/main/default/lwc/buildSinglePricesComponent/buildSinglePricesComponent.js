@@ -8,9 +8,11 @@ import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from 'c/luxon';
 
 
+const STATUS_FAILED = 'Failed';
+const STATUS_READY = 'Ready';
 const COMPLETED_STATUSES = ['Completed'];
 const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding',  'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
-const FAILED_STATUSES = ['Error', 'Aborted', 'Failed'];
+const FAILED_STATUSES = ['Error', 'Aborted', STATUS_FAILED];
 
 export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement)  {
     @api recordId;
@@ -65,7 +67,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
         } else if (error) {
             console.log('WiredJobError -> ',error);
             this.statusMessage = error.body.message;
-            this.status = 'Failed';
+            this.status = STATUS_FAILED;
         }
     };
 
@@ -100,8 +102,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
             .then(result => {
                 console.debug('GetInitialStatusResult -> ', result);
 
-                if (result !== 'Ready'){
-                    //this.statusMessage = result ? result : 'Unknown error';
+                if (result !== STATUS_READY){
                     this.startBtnDisabled = true;
 
                     this.updateStatus();
@@ -111,7 +112,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
             .catch(error => {
                 console.log('GetInitialStatusError -> ', error);
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
                 this.startBtnDisabled = true;
             }).finally(() => {
             this.inProgress = false;
@@ -128,13 +129,13 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 this.jobStartedAt = DateTime.fromMillis(new Date().getTime(), {zone: TIME_ZONE}).toMillis();
                 this.updateStatus();
                 if (result !== 'Single Listing Update Prices Job has been started.'){
-                    this.status = 'Failed';
+                    this.status = STATUS_FAILED;
                 }
             })
             .catch(error => {
                 console.log('StartBuildingPricesError -> ', error);
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
             })
             .finally(() => {
                 this.inProgress = false;
