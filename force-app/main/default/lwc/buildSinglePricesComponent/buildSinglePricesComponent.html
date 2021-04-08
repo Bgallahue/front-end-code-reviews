@@ -5,8 +5,8 @@
 <!-- Build Prices Component -->
 <template>
     <div class="slds-grid flex-align-center">
-        <article
-            class="slds-card slds-size_1-of-1 slds-large-size_2-of-3 slds-m-around_medium slds-p-vertical_xx-large slds-p-horizontal_medium slds-grid flex-align-center"
+        <lightning-card
+            class="slds-size_1-of-1 slds-large-size_2-of-3 slds-m-around_medium slds-p-vertical_xx-large slds-p-horizontal_medium slds-grid flex-align-center"
         >
             <template if:true={isLoading}>
                 <div class="slds-spinner_container">
@@ -34,6 +34,6 @@
                     ></lightning-button>
                 </div>
             </div>
-        </article>
+        </lightning-card>
     </div>
 </template>
