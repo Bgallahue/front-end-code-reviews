@@ -1,11 +1,11 @@
 import {LightningElement, track, api, wire} from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import APEX_getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
-import APEX_getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
-import APEX_startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
+import APEX_getLastPricesModificationDate from '@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate';
+import APEX_getInitialStatus from '@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus';
+import APEX_startBuildingPrices from '@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices';
 import APEX_getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
 import TIME_ZONE from '@salesforce/i18n/timeZone';
-import { DateTime } from "c/luxon";
+import { DateTime } from 'c/luxon';
 
 
 const COMPLETED_STATUSES = ['Completed'];
@@ -17,11 +17,11 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
 
     refresher = 0;
 
-    loadingMessage = "Loading Component";
-    lastPricesUpdateDate = "";
+    loadingMessage = 'Loading Component';
+    lastPricesUpdateDate = '';
 
-    status = "Press \"Build Prices\" button to start process."; //display job status
-    statusMessage = ""; //full info
+    status = 'Press "Build Prices" button to start process.'; //display job status
+    statusMessage = ''; //full info
     startBtnDisabled = false;
 
     jobStartedAt = null;
@@ -70,7 +70,7 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     };
 
     buildPricesStart(){
-        this.statusMessage = "";
+        this.statusMessage = '';
         this.startBuildingPrices();
         this.startBtnDisabled = true;
     }
@@ -166,14 +166,14 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     get statusClass(){
         console.log('###')
         if (COMPLETED_STATUSES.includes(this.status) ){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_succeeded";
+            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_succeeded';
         }
         if (FAILED_STATUSES.includes(this.status)){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_failed";
+            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_failed';
         }
         if (IN_PROCESS_STATUSES.includes(this.status)){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_info animation-texture";
+            return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_info animation-texture';
         }
-        return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display ";
+        return 'slds-box slds-p-vertical_large slds-theme_alert-texture status-display ';
     }
 }
