@@ -8,16 +8,10 @@
     <lightning-card
       class="slds-large-size_2-of-3 slds-size_1-of-1 slds-p-around_medium"
     >
-      <template if:true={isInProgress}>
-        <div class="slds-spinner_container">
-          <div role="status" class="slds-spinner slds-spinner_medium">
-            <span class="slds-assistive-text"> Loading </span>
-            <div class="slds-spinner__dot-a"></div>
-            <div class="slds-spinner__dot-b"></div>
-          </div>
-          <span class="custom-loading-text"> {loadingMessage} </span>
-        </div>
-      </template>
+      <c-loading-spinner
+        if:true={isInProgress}
+        type="absolute"
+      ></c-loading-spinner>
       <div
         class="slds-is-absolute last-update slds-text-body_small slds-text-color_weak"
       >
