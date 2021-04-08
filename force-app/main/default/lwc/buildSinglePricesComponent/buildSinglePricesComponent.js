@@ -1,5 +1,4 @@
 import { LightningElement, api, wire } from 'lwc';
-import { NavigationMixin } from 'lightning/navigation';
 import APEX_getLastPricesModificationDate from '@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate';
 import APEX_getInitialStatus from '@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus';
 import APEX_startBuildingPrices from '@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices';
@@ -17,7 +16,7 @@ const COMPLETED_STATUSES = ['Completed'];
 const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding',  'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
 const FAILED_STATUSES = ['Error', 'Aborted', STATUS_FAILED];
 
-export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement)  {
+export default class BuildSinglePricesComponent extends LightningElement {
     @api recordId;
 
     // template data
