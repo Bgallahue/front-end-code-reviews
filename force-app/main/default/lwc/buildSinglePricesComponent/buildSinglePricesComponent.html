@@ -24,11 +24,14 @@
             <div class="slds-size_1-of-1 slds-large-size_2-of-3 slds-grid">
                 <div class={statusClass}>{status} {statusMessage}</div>
                 <div class="card-row__between slds-p-top_medium">
-                    <button class="slds-button slds-button_neutral" onclick={backToListing}>Back to Listing</button>
+                    <lightning-button variant="neutral" label="Back to Listing" onclick={handleBackToListing}></lightning-button>
 
-                    <button class="slds-button slds-button_brand" onclick={handleBuildPricesStart} disabled={isStartBtnDisabled}>
-                        Build Prices
-                    </button>
+                    <lightning-button
+                        variant="brand"
+                        label="Build Prices"
+                        onclick={handleBuildPricesStart}
+                        disabled={isStartBtnDisabled}
+                    ></lightning-button>
                 </div>
             </div>
         </article>
