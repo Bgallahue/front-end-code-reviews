@@ -2,7 +2,7 @@ import {LightningElement, track, api, wire} from 'lwc';
 import APEX_getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
 import APEX_getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
 import APEX_startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
-import AEgetCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
+import APEX_getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
@@ -66,7 +66,7 @@ export default class BuildSinglePricesComponent extends LightningElement {
     
         }
 
-        @wire(getCurrentJobStatus, { listingId: '$listing_id', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
+        @wire(APEX_getCurrentJobStatus, { listingId: '$listing_id', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
         wiresJobStatus({ error, data }) {
             if (data) {
                 if (this.refresher > 0){
