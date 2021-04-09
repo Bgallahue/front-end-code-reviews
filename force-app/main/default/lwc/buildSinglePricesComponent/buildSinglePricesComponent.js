@@ -11,6 +11,8 @@ import getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
+const STATUS_FAILED = 'Failed';
+const STATUS_READY = 'Ready';
 const COMPLETED_STATUSES = ['Completed'];
 const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding',  'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
 const FAILED_STATUSES = ['Error', 'Aborted', 'Failed'];
@@ -88,7 +90,6 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
             listingId: this.recordId
         })
             .then(result => {
-                console.debug('GetLastPricesModificationDateResult -> ', result);
                 this.lastPricesUpdateDate = result;
             })
             .catch(error => {
@@ -111,7 +112,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
             })
             .catch(error => {
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
                 this.isStartButtonDisabled = true;
             }).finally(() => {
             this.isInProgress = false;
@@ -137,7 +138,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
                 this.status = 'Failed';
             })
             .finally(() => {
-                this.inProgress = false;
+                this.isInProgress = false;
             })
     }
 
