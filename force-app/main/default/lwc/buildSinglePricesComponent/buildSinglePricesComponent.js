@@ -1,30 +1,39 @@
 /**
- * Created by Artem Hamzin on 13.03.2020.
+ * Created by Artem Hamzin on 13.03.2021.
  */
 
-import {LightningElement, track, api, wire} from 'lwc';
+import { LightningElement, track, api, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
-import getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
-import startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
-import getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
-const COMPLETED_STATUSES = ['Completed'];
-const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding',  'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
-const FAILED_STATUSES = ['Error', 'Aborted', 'Failed'];
+import APEX_getLastPricesModificationDate from "@salesforce/apex/SmartRatesEnrollmentController.getLastPricesModificationDate";
+import APEX_getInitialStatus from "@salesforce/apex/SmartRatesEnrollmentController.getInitialStatus";
+import APEX_startBuildingPrices from "@salesforce/apex/SmartRatesEnrollmentController.startBuildingPrices";
+import APEX_getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentController.getCurrentJobStatus';
 
-export default class BuildSinglePricesComponent extends  NavigationMixin(LightningElement)  {
+const DEFAULT_STATUS_MESSAGE = "Press \"Build Prices\" button to start process.";
+const LOADING_MESSAGE = "Loading Component";
+
+const STATUS_FAILED = 'Failed';
+const JOB_STATUS_READY = 'Ready';
+const JOB_NAME_SINGLE_LISTING_BUILD_PRICES = "Single Listing Build Prices";
+
+
+const COMPLETED_STATUSES = ['Completed'];
+const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding', 'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
+const FAILED_STATUSES = ['Error', 'Aborted', STATUS_FAILED];
+
+export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement) {
     @api listing_id;
     @api user_id;
 
     refresher = 0;
 
-    loadingMessage = "Loading Component";
+    loadingMessage = LOADING_MESSAGE;
     lastPricesUpdateDate = "";
 
-    status = "Press \"Build Prices\" button to start process."; //display job status
+    status = DEFAULT_STATUS_MESSAGE; //display job status
     statusMessage = ""; //full info
     startBtnDisabled = false;
 
@@ -41,25 +50,46 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
         timeoutSeconds: 10000
     }
 
+    //
+    // GETTERS
+    //
+
+    get statusClass() {
+        return [
+            'slds-box slds-p-vertical_large slds-theme_alert-texture',
+            COMPLETED_STATUSES.includes(this.status) ? 'build-single-prices_status-display_succeeded' : '',
+            FAILED_STATUSES.includes(this.status) ? 'build-single-prices_status-display_failed' : '',
+            IN_PROCESS_STATUSES.includes(this.status) ? 'build-single-prices_status-display_info build-single-prices_animation-texture' : ''
+        ].join(' ');
+    }
+
+    //
+    // LIFECYCLE
+    //
+
     connectedCallback() {
         if (this.$.inited) return;
         this.getLastPricesModificationDate();
         this.getInitialStatus();
         this.$.inited = true;
-
     }
 
     //
-    // methods
+    // API METHODS
     //
 
-    @wire(getCurrentJobStatus, { listingId: '$listing_id', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
-    wiresJobStatus({ error, data }) {
+    @wire(APEX_getCurrentJobStatus, {
+        listingId: '$listing_id',
+        jobName: JOB_NAME_SINGLE_LISTING_BUILD_PRICES,
+        jobStartTime: '$jobStartedAt',
+        refresher: '$refresher'
+    })
+    wiredJobStatus({ error, data }) {
         if (data) {
-            if (this.refresher > 0){
+            if (this.refresher > 0) {
                 this.status = data;
                 this.statusMessage = '';
-                if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)){
+                if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)) {
                     this.inProgress = false;
                     this.startBtnDisabled = false;
                     clearInterval(this.updateTimer.timer);
@@ -67,24 +97,14 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
                 }
             }
         } else if (error) {
-            console.log('WiredJobError -> ',error);
+            console.log('WiredJobError -> ', error);
             this.statusMessage = error.body.message;
             this.status = 'Failed';
         }
     };
 
-    buildPricesStart(){
-        this.statusMessage = "";
-        this.startBuildingPrices();
-        this.startBtnDisabled = true;
-    }
-
-    backToListing(){
-        window.history.back();
-    }
-
     getLastPricesModificationDate() {
-        getLastPricesModificationDate({
+        APEX_getLastPricesModificationDate({
             listingId: this.listing_id
         })
             .then(result => {
@@ -96,18 +116,15 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
             });
     }
 
-    getInitialStatus(){
-        getInitialStatus({
+    getInitialStatus() {
+        APEX_getInitialStatus({
             listingId: this.listing_id,
             jobName: 'Single Listing Build Prices'
         })
             .then(result => {
                 console.debug('GetInitialStatusResult -> ', result);
-
-                if (result !== 'Ready'){
-                    //this.statusMessage = result ? result : 'Unknown error';
+                if (result !== JOB_STATUS_READY) {
                     this.startBtnDisabled = true;
-
                     this.updateStatus();
                     this.status = result;
                 }
@@ -115,69 +132,55 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
             .catch(error => {
                 console.log('GetInitialStatusError -> ', error);
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
                 this.startBtnDisabled = true;
             }).finally(() => {
-            this.inProgress = false;
-        })
+                this.inProgress = false;
+            })
     }
 
     startBuildingPrices() {
-        startBuildingPrices({
+        APEX_startBuildingPrices({
             listingId: this.listing_id
         })
             .then(result => {
                 console.debug('StartBuildingPricesResult -> ', result);
                 this.status = result;
-                this.jobStartedAt = DateTime.fromMillis(new Date().getTime(), {zone: TIME_ZONE}).toMillis();
+                this.jobStartedAt = DateTime.fromMillis(new Date().getTime(), { zone: TIME_ZONE }).toMillis();
                 this.updateStatus();
-                if (result !== 'Single Listing Update Prices Job has been started.'){
-                    this.status = 'Failed';
-                }
             })
             .catch(error => {
                 console.log('StartBuildingPricesError -> ', error);
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
             })
             .finally(() => {
                 this.inProgress = false;
             })
     }
+    
+    //
+    // TEMPLATE EVENTS HANDLERS
+    //
+    
+    handleBuildPricesButtonClick() {
+        this.statusMessage = "";
+        this.startBuildingPrices();
+        this.startBtnDisabled = true;
+    }
 
+    handleBackToListingButtonClick() {
+        window.history.back();
+    }
+
+    // 
+    // PRIVATE METHODS
+    //    
+    
     updateStatus() {
-        this.updateTimer.timer = setInterval( () => {
+        this.updateTimer.timer = setInterval(() => {
             this.refresher++;
             // this.getCurrentJobStatus();
         }, this.updateTimer.timeoutSeconds);
-    }
-
-    //
-    // getters
-    //
-
-    get LastPricesModificationDate(){
-        return this.lastPricesUpdateDate;
-    }
-
-    get isStartBtnDisabled(){
-        return this.startBtnDisabled;
-    }
-
-    get isInProgress(){
-        return this.inProgress;
-    }
-    get statusClass(){
-        console.log('###')
-        if (COMPLETED_STATUSES.includes(this.status) ){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_succeeded";
-        }
-        if (FAILED_STATUSES.includes(this.status)){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_failed";
-        }
-        if (IN_PROCESS_STATUSES.includes(this.status)){
-            return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display status-display_info animation-texture";
-        }
-        return "slds-box slds-p-vertical_large slds-theme_alert-texture status-display ";
     }
 }
