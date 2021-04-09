@@ -1,37 +1,35 @@
 <template>
     <div class="slds-grid flex-align-center">
-        <article
-                class="slds-card slds-size_1-of-1 slds-large-size_2-of-3 slds-m-around_medium slds-p-vertical_xx-large slds-p-horizontal_medium slds-grid flex-align-center">
+
+        <lightning-card
+            class="slds-size_1-of-1 slds-large-size_2-of-3 slds-m-around_medium slds-p-vertical_xx-large slds-p-horizontal_medium slds-grid flex-align-center"
+        >
             <template if:false={isInProgress}>
                 <div class="slds-spinner_container">
                     <div role="status" class="slds-spinner slds-spinner_medium">
-                        <span class="slds-assistive-text">
-                            Loading
-                        </span>
+                        <span class="slds-assistive-text"> Loading </span>
                         <div class="slds-spinner__dot-a"></div>
                         <div class="slds-spinner__dot-b"></div>
-
                     </div>
-                    <span class="custom-loading-text">
-                            {loadingMessage}
-                    </span>
+                    <span class="custom-loading-text"> {loadingMessage} </span>
                 </div>
             </template>
             <div class="slds-is-absolute last-update slds-text-body_small slds-text-color_weak">
                 Last Price Updated DateTime: {lastPricesModificationDate}
             </div>
-            <div class="slds-size_1-of-1 slds-large-size_2-of-3 slds-grid ">
-                <div class={statusClass}>
-                    {status} {statusMessage}
-                </div>
+            <div class="slds-size_1-of-1 slds-large-size_2-of-3 slds-grid">
+                <div class={statusClass}>{status} {statusMessage}</div>
                 <div class="card-row__between slds-p-top_medium">
-                    <button class="slds-button slds-button_neutral" onclick={backToListing}>Back to Listing</button>
+                    <lightning-button variant="neutral" label="Back to Listing" onclick={handleBackToListing}></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label="Build Prices"
+                        onclick={handleBuildPricesStart}
+                        disabled={isStartButtonDisabled}
+                    ></lightning-button>
 
-                    <button class="slds-button slds-button_brand" onclick={buildPricesStart}
-                            disabled={isStartButtonDisabled}>Build Prices
-                    </button>
                 </div>
             </div>
-        </article>
+        </lightning-card>
     </div>
 </template>
