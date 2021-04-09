@@ -1,9 +1,4 @@
-/**
- * Created by Artem Hamzin on 13.03.2021.
- */
-
-import { LightningElement, track, api, wire } from 'lwc';
-import { NavigationMixin } from 'lightning/navigation';
+import {LightningElement, track, api, wire} from 'lwc';
 import TIME_ZONE from '@salesforce/i18n/timeZone';
 import { DateTime } from "c/luxon";
 
@@ -14,18 +9,15 @@ import APEX_getCurrentJobStatus from '@salesforce/apex/SmartRatesEnrollmentContr
 
 const DEFAULT_STATUS_MESSAGE = "Press \"Build Prices\" button to start process.";
 const LOADING_MESSAGE = "Loading Component";
-
 const STATUS_FAILED = 'Failed';
 const JOB_STATUS_READY = 'Ready';
-const JOB_NAME_SINGLE_LISTING_BUILD_PRICES = "Single Listing Build Prices";
-
-
+const SINGLE_LISTING_JOB = 'Single Listing Build Prices';
 const COMPLETED_STATUSES = ['Completed'];
 const IN_PROCESS_STATUSES = ['Pending', 'In Queue', 'In Progress', 'Moved to Daily Job', 'Holding', 'Queued', 'Preparing', 'Processing', 'Single Listing Update Prices Job has been started.'];
 const FAILED_STATUSES = ['Error', 'Aborted', STATUS_FAILED];
 
-export default class BuildSinglePricesComponent extends NavigationMixin(LightningElement) {
-    @api listing_id;
+export default class BuildSinglePricesComponent extends LightningElement {
+    @api recordId;
     @api user_id;
 
     refresher = 0;
@@ -33,28 +25,21 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
     loadingMessage = LOADING_MESSAGE;
     lastPricesUpdateDate = "";
 
-    status = DEFAULT_STATUS_MESSAGE; //display job status
-    statusMessage = ""; //full info
-    startBtnDisabled = false;
+    status = DEFAULT_STATUS_MESSAGE;
+    statusMessage = "";
+    isStartButtonDisabled = false;
+    isInProgress = false;
 
     jobStartedAt = null;
-
-    inProgress = true;
-
-    $ = {
-        inited: false
-    }
 
     updateTimer = {
         timer: null,
         timeoutSeconds: 10000
     }
-
-    //
-    // GETTERS
-    //
-
-    get statusClass() {
+        //
+        // GETTERS
+        //
+        get statusClass() {
         return [
             'slds-box slds-p-vertical_large slds-theme_alert-texture',
             COMPLETED_STATUSES.includes(this.status) ? 'build-single-prices_status-display_succeeded' : '',
@@ -62,86 +47,43 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
             IN_PROCESS_STATUSES.includes(this.status) ? 'build-single-prices_status-display_info build-single-prices_animation-texture' : ''
         ].join(' ');
     }
-
-    //
-    // LIFECYCLE
-    //
-
-    connectedCallback() {
-        if (this.$.inited) return;
-        this.getLastPricesModificationDate();
-        this.getInitialStatus();
-        this.$.inited = true;
-    }
-
-    //
-    // API METHODS
-    //
-
-    @wire(APEX_getCurrentJobStatus, {
-        listingId: '$listing_id',
-        jobName: JOB_NAME_SINGLE_LISTING_BUILD_PRICES,
-        jobStartTime: '$jobStartedAt',
-        refresher: '$refresher'
-    })
-    wiredJobStatus({ error, data }) {
-        if (data) {
-            if (this.refresher > 0) {
-                this.status = data;
-                this.statusMessage = '';
-                if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)) {
-                    this.inProgress = false;
-                    this.startBtnDisabled = false;
-                    clearInterval(this.updateTimer.timer);
-                    this.refresher = 0;
-                }
-            }
-        } else if (error) {
-            console.log('WiredJobError -> ', error);
-            this.statusMessage = error.body.message;
-            this.status = 'Failed';
+        
+        //
+        // LIFECYCLE
+        //
+    
+        connectedCallback() {
+            this.getLastPricesModificationDate();
+            this.getInitialStatus();
         }
-    };
 
-    getLastPricesModificationDate() {
-        APEX_getLastPricesModificationDate({
-            listingId: this.listing_id
-        })
-            .then(result => {
-                console.debug('GetLastPricesModificationDateResult -> ', result);
-                this.lastPricesUpdateDate = result;
-            })
-            .catch(error => {
-                console.log('GetLastPricesModificationDateError -> ', error);
-            });
-    }
+        //
+        // PRIVATE METHODS
+        //
 
-    getInitialStatus() {
-        APEX_getInitialStatus({
-            listingId: this.listing_id,
-            jobName: 'Single Listing Build Prices'
-        })
-            .then(result => {
-                console.debug('GetInitialStatusResult -> ', result);
-                if (result !== JOB_STATUS_READY) {
-                    this.startBtnDisabled = true;
-                    this.updateStatus();
-                    this.status = result;
-                }
+      @wire(APEX_getCurrentJobStatus, { listingId: '$listing_id', jobName: 'Single Listing Build Prices', jobStartTime: '$jobStartedAt', refresher: '$refresher'  })
+      wiredJobStatus({ error, data }) {
+          if (data) {
+              if (this.refresher > 0){
+                  this.status = data;
+                  this.statusMessage = '';
+                  if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)){
+                      this.isInProgress = true;
+                      this.isStartButtonDisabled = false;
+                      clearInterval(this.updateTimer.timer);
+                      this.refresher = 0;
+                  }
+              }
+          } else if (error) {
+              console.log('WiredJobError -> ',error);
+              this.statusMessage = error.body.message;
+              this.status = STATUS_FAILED;
             })
-            .catch(error => {
-                console.log('GetInitialStatusError -> ', error);
-                this.statusMessage = error.body.message;
-                this.status = STATUS_FAILED;
-                this.startBtnDisabled = true;
-            }).finally(() => {
-                this.inProgress = false;
-            })
-    }
-
+     }
+    } 
     startBuildingPrices() {
         APEX_startBuildingPrices({
-            listingId: this.listing_id
+            listingId: this.recordId
         })
             .then(result => {
                 console.debug('StartBuildingPricesResult -> ', result);
@@ -153,23 +95,55 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
                 console.log('StartBuildingPricesError -> ', error);
                 this.statusMessage = error.body.message;
                 this.status = STATUS_FAILED;
+            }
+        };
+                   
+        
+        
+        getLastPricesModificationDate() {
+            APEX_getLastPricesModificationDate({
+                listingId: this.recordId
             })
-            .finally(() => {
-                this.inProgress = false;
+                .then(result => {
+                    this.lastPricesUpdateDate = result;
+                })
+                .catch(error => {
+                    console.log('GetLastPricesModificationDateError -> ', error);
+                });
+        }
+    
+        getInitialStatus(){
+            APEX_getInitialStatus({
+                listingId: this.recordId,
+                jobName: SINGLE_LISTING_JOB
+            })
+                .then(result => {
+                    if (result !== STATUS_READY){
+                        this.isStartButtonDisabled = true;
+                        this.updateStatus();
+                        this.status = result;
+                    }
+                })
+                .catch(error => {
+                    this.statusMessage = error.body.message;
+                    this.status = STATUS_FAILED;
+                    this.isStartButtonDisabled = true;
+                }).finally(() => {
+                this.isInProgress = true;
             })
     }
-    
+
     //
     // TEMPLATE EVENTS HANDLERS
     //
-    
-    handleBuildPricesButtonClick() {
+
+    handleBuildPricesStart(){
         this.statusMessage = "";
         this.startBuildingPrices();
-        this.startBtnDisabled = true;
+        this.isStartButtonDisabled = true;
     }
 
-    handleBackToListingButtonClick() {
+    handleBackToListing(){
         window.history.back();
     }
 
@@ -183,4 +157,5 @@ export default class BuildSinglePricesComponent extends NavigationMixin(Lightnin
             // this.getCurrentJobStatus();
         }, this.updateTimer.timeoutSeconds);
     }
+      
 }
