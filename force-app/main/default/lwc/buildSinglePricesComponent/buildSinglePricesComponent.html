@@ -1,13 +1,8 @@
-<!--
- - Created by Artem Hamzin on 12.03.2020.
- -->
-
-<!-- Build Prices Component -->
 <template>
     <div class="slds-grid flex-align-center">
         <article
                 class="slds-card slds-size_1-of-1 slds-large-size_2-of-3 slds-m-around_medium slds-p-vertical_xx-large slds-p-horizontal_medium slds-grid flex-align-center">
-            <template if:true={isInProgress}>
+            <template if:false={isInProgress}>
                 <div class="slds-spinner_container">
                     <div role="status" class="slds-spinner slds-spinner_medium">
                         <span class="slds-assistive-text">
@@ -33,7 +28,7 @@
                     <button class="slds-button slds-button_neutral" onclick={backToListing}>Back to Listing</button>
 
                     <button class="slds-button slds-button_brand" onclick={buildPricesStart}
-                            disabled={isStartBtnDisabled}>Build Prices
+                            disabled={isStartButtonDisabled}>Build Prices
                     </button>
                 </div>
             </div>
