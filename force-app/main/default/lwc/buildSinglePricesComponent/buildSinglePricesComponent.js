@@ -26,13 +26,12 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
     loadingMessage = "Loading Component";
     lastPricesUpdateDate = "";
 
-    status = "Press \"Build Prices\" button to start process."; //display job status
-    statusMessage = ""; //full info
-    startBtnDisabled = false;
+    status = "Press \"Build Prices\" button to start process.";
+    statusMessage = "";
+    isStartButtonDisabled = false;
+    isInProgress = true;
 
     jobStartedAt = null;
-
-    inProgress = true;
 
     $ = {
         inited: false
@@ -71,7 +70,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
         } else if (error) {
             console.log('WiredJobError -> ',error);
             this.statusMessage = error.body.message;
-            this.status = 'Failed';
+            this.status = STATUS_FAILED;
         }
     };
 
@@ -103,7 +102,7 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
             jobName: 'Single Listing Build Prices'
         })
             .then(result => {
-                if (result !== 'Ready'){
+                if (result !== STATUS_READY){
                     this.isStartButtonDisabled = true;
 
                     this.updateStatus();
@@ -129,13 +128,12 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
                 this.jobStartedAt = DateTime.fromMillis(new Date().getTime(), {zone: TIME_ZONE}).toMillis();
                 this.updateStatus();
                 if (result !== 'Single Listing Update Prices Job has been started.'){
-                    this.status = 'Failed';
+                    this.status = STATUS_FAILED;
                 }
             })
             .catch(error => {
-                console.log('StartBuildingPricesError -> ', error);
                 this.statusMessage = error.body.message;
-                this.status = 'Failed';
+                this.status = STATUS_FAILED;
             })
             .finally(() => {
                 this.isInProgress = false;
@@ -153,17 +151,6 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
     // getters
     //
 
-    get LastPricesModificationDate(){
-        return this.lastPricesUpdateDate;
-    }
-
-    get isStartBtnDisabled(){
-        return this.startBtnDisabled;
-    }
-
-    get isInProgress(){
-        return this.inProgress;
-    }
     get statusClass(){
         console.log('###')
         if (COMPLETED_STATUSES.includes(this.status) ){
