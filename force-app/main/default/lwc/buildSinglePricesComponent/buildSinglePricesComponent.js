@@ -24,7 +24,7 @@ export default class BuildSinglePricesComponent extends LightningElement {
     status = "Press \"Build Prices\" button to start process.";
     statusMessage = "";
     isStartButtonDisabled = false;
-    isInProgress = true;
+    isInProgress = false;
 
     jobStartedAt = null;
 
@@ -73,8 +73,8 @@ export default class BuildSinglePricesComponent extends LightningElement {
                     this.status = data;
                     this.statusMessage = '';
                     if (COMPLETED_STATUSES.includes(data) || FAILED_STATUSES.includes(data)){
-                        this.inProgress = false;
-                        this.startBtnDisabled = false;
+                        this.isInProgress = true;
+                        this.isStartButtonDisabled = false;
                         clearInterval(this.updateTimer.timer);
                         this.refresher = 0;
                     }
@@ -119,7 +119,7 @@ export default class BuildSinglePricesComponent extends LightningElement {
                     this.status = STATUS_FAILED;
                     this.isStartButtonDisabled = true;
                 }).finally(() => {
-                this.isInProgress = false;
+                this.isInProgress = true;
             })
         }
     
@@ -141,7 +141,7 @@ export default class BuildSinglePricesComponent extends LightningElement {
                     this.status = STATUS_FAILED;
                 })
                 .finally(() => {
-                    this.isInProgress = false;
+                    this.isInProgress = true;
                 })
         }
     
@@ -158,7 +158,7 @@ export default class BuildSinglePricesComponent extends LightningElement {
         handleBuildPricesStart(){
             this.statusMessage = "";
             this.startBuildingPrices();
-            this.startBtnDisabled = true;
+            this.isStartButtonDisabled = true;
         }
 
         handleBackToListing(){
