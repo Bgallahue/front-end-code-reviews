@@ -1,7 +1,7 @@
 /**
  * Created by Artem Hamzin on 12.03.2020.
  */
-@keyframes animation-texture-frames {
+@keyframes build-single-prices-component_animation-texture-frames {
     0% {
         background-position: 0 0;
     }
@@ -9,6 +9,6 @@
         background-position: 64px 0;
     }
 }
-.animation-texture {
+.build-single-prices-component_animation-texture {
     animation: animation-texture-frames 1s linear infinite;
 }
