@@ -1,14 +1,13 @@
-/**
- * Created by Artem Hamzin on 12.03.2020.
- */
 @keyframes build-single-prices-component_animation-texture-frames {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 64px 0;
-    }
+
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 64px 0;
+  }
 }
 .build-single-prices-component_animation-texture {
-    animation: animation-texture-frames 1s linear infinite;
+  animation: build-single-prices-component_animation-texture-frames 1s linear
+    infinite;
 }
