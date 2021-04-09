@@ -84,8 +84,8 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
     }
 
     getLastPricesModificationDate() {
-        getLastPricesModificationDate({
-            listingId: this.listing_id
+        APEX_getLastPricesModificationDate({
+            listingId: this.recordId
         })
             .then(result => {
                 console.debug('GetLastPricesModificationDateResult -> ', result);
@@ -97,34 +97,30 @@ export default class BuildSinglePricesComponent extends  NavigationMixin(Lightni
     }
 
     getInitialStatus(){
-        getInitialStatus({
-            listingId: this.listing_id,
+        APEX_getInitialStatus({
+            listingId: this.recordId,
             jobName: 'Single Listing Build Prices'
         })
             .then(result => {
-                console.debug('GetInitialStatusResult -> ', result);
-
                 if (result !== 'Ready'){
-                    //this.statusMessage = result ? result : 'Unknown error';
-                    this.startBtnDisabled = true;
+                    this.isStartButtonDisabled = true;
 
                     this.updateStatus();
                     this.status = result;
                 }
             })
             .catch(error => {
-                console.log('GetInitialStatusError -> ', error);
                 this.statusMessage = error.body.message;
                 this.status = 'Failed';
-                this.startBtnDisabled = true;
+                this.isStartButtonDisabled = true;
             }).finally(() => {
-            this.inProgress = false;
+            this.isInProgress = false;
         })
     }
 
     startBuildingPrices() {
         startBuildingPrices({
-            listingId: this.listing_id
+            listingId: this.recordId
         })
             .then(result => {
                 console.debug('StartBuildingPricesResult -> ', result);
