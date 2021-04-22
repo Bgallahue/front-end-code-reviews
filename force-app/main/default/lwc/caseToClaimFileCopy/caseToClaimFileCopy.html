@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="Case to Claim File Copy">
+        <div if:true={isShown}>
+            <c-loading-spinner if:true={state.loading} type="absolute"></c-loading-spinner>
+            <div class="slds-m-around--small">
+                <lightning-combobox
+                    name="claims"
+                    label="Select a Claim"
+                    value={state.selectedClaim}
+                    options={data.relatedClaimsList}
+                    onchange={handleChangeClaim}
+                ></lightning-combobox>
+                <span class="slds-form-element__label">Select files:</span>
+                <lightning-datatable
+                    key-field="Id"
+                    data={data.fileList}
+                    columns={columns}
+                    onrowselection={handleSelectRow}
+                    class="slds-m-around--small"
+                ></lightning-datatable>
+                <div slot="footer">
+                    <lightning-button
+                        variant="brand"
+                        label="Copy Selected Files"
+                        onclick={handleClick}
+                        disabled={isCopyDisabled}
+                    ></lightning-button>
+                </div>
+            </div>
+        </div>
+        <div if:false={isShown} class="slds-m-around--small">
+            <p>Missing either related Claims or Files to copy</p>
+        </div>
+    </lightning-card>
+</template>

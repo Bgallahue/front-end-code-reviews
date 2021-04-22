@@ -1,22 +1,31 @@
 # Repo for Evolve Front End Code Reviews
-4/7/2021
+4/22/2021
 
-Component: buildSinglePricesComponent
+Component: caseToClaimFileCopy
+
+Front End Documentation Reference: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1568538625/Front+End+Development+Overview
 
 Assignments:
-# HTML/CSS (All Lines)
-David Manhardt
+# HTML/CSS Cheat Sheet
+Bobby Gallahue: #1 to #3
+Artem Hamzin: #4 to #6
 
-Artem Hamzin
+# Javascript Cheat Sheet
 
-# Javascript (Lines 1-90)
-Alex Popov
+Anton Kozhemyakin: #1 to #5
+Artem Hamzin: #6 to #9
 
-Anton Kozhemyakin
+# Database Cheat Sheet
 
-# Javascript (Lines 91 - 183) 
-Ilya Toloknov
+Bobby Gallahue: #1 to #3
+David Manhardt: #4 to #5
 
-Bobby Gallahue
+# Naming Convention Cheat Sheet
 
-Instructions: In this repo the 'hello.apex' file (In scripts > apex) contains steps to set up a Listing so you can view this component in an Org
+David Manhardt: #1 to #5
+Anton Kozhemyakin: #6 to #9
+
+Ilya Toloknov : No Assignments, Vacation
+Alex Popov : No Assignments, Vacation
+
+Instructions: David will fill in instructions on how to view his component
