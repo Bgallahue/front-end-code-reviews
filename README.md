@@ -1,7 +1,7 @@
 # Repo for Evolve Front End Code Reviews
-4/22/2021
+5/18/2021
 
-Component: caseToClaimFileCopy
+Component: chat
 
 Front End Code Review Instructions: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1426980900/Front+End+Code+Reviews
 
