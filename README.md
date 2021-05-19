@@ -34,3 +34,4 @@ Bobby Gallahue: #6 to #9
 
 # Instructions
 Ilya would you mind just filling in quick instructions on the easiest way we can view your component (whether in Communities or Internally)
+
