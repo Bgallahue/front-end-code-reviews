@@ -25,7 +25,7 @@ export default class Chat extends handleErrorMixin(LightningElement) {
     // GETTERS
     //
 
-    get disableSave() {
+    get isTextInputValid() {
         return !this.form.text.trim();
     }
 
