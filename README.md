@@ -1,9 +1,9 @@
 # Repo for Evolve Front End Code Reviews
-5/18/2021
+6/2/2021
 
-Component: chat
+Component: nearbyRecords
 
-Ticket Reference: https://evolvevrn.atlassian.net/browse/OD-1899
+Ticket Reference: https://evolvevrn.atlassian.net/browse/OD-1897
 
 Front End Code Review Instructions: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1426980900/Front+End+Code+Reviews
 
@@ -11,29 +11,29 @@ Front End Documentation Reference: https://evolvevrn.atlassian.net/wiki/spaces/S
 
 Assignments:
 # HTML/CSS Cheat Sheet
-Ilya Toloknov: #1 to #3
+Bobby Gallahue: #1 to #3
 
-Anton Kozhemyakin: #4 to #6
+David Manhardt: #4 to #6
 
 # Javascript Cheat Sheet
 
-Alex Popov: #1 to #5
+Artem Hazim: #1 to #5
 
-Bobby Gallahue: #6 to #9
+Alex Popov: #6 to #9
 
 # Database Cheat Sheet
 
-David Manhardt: #1 to #3
+Ali Jameel: #1 to #3
 
-Ilya Toloknov: #4 to #5
+Anton Kozhemyakin: #4 to #5
 
 # Naming Convention Cheat Sheet
 
-Alex Popov: #1 to #5
+Ilya Toloknov: #1 to #5
 
-Bobby Gallahue: #6 to #9
+Anton Kozhemyakin: #6 to #9
 
 
 # Instructions
-Ilya would you mind just filling in quick instructions on the easiest way we can view your component (whether in Communities or Internally)
+This component utilizes some existing Geopointe records so it is easiest to view it in Stage on this record  https://evolvevrn--stage.lightning.force.com/lightning/r/Homeowner_Application__c/a3F4P000002DuLmUAK/view.
 
