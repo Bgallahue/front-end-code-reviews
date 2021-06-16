@@ -1,9 +1,9 @@
 # Repo for Evolve Front End Code Reviews
-6/2/2021
+6/16/2021
 
-Component: nearbyRecords
+Component: sendEmailQuickAction
 
-Ticket Reference: https://evolvevrn.atlassian.net/browse/OD-1897
+Ticket Reference: https://evolvevrn.atlassian.net/browse/OD-1979
 
 Front End Code Review Instructions: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1426980900/Front+End+Code+Reviews
 
@@ -11,29 +11,29 @@ Front End Documentation Reference: https://evolvevrn.atlassian.net/wiki/spaces/S
 
 Assignments:
 # HTML/CSS Cheat Sheet
-Bobby Gallahue: #1 to #3
+Ali Jameel: #1 to #3
 
-David Manhardt: #4 to #6
+Ilya Toloknov: #4 to #6
 
 # Javascript Cheat Sheet
 
 Artem Hazim: #1 to #5
 
-Alex Popov: #6 to #9
+Bobby Gallahue: #6 to #9
 
 # Database Cheat Sheet
 
-Ali Jameel: #1 to #3
+David Manhardt: #1 to #3
 
-Anton Kozhemyakin: #4 to #5
+Alex Popov: #4 to #5
 
 # Naming Convention Cheat Sheet
 
-Ilya Toloknov: #1 to #5
+Ali Jameel: #1 to #5
 
 Anton Kozhemyakin: #6 to #9
 
 
 # Instructions
-This component utilizes some existing Geopointe records so it is easiest to view it in Stage on this record  https://evolvevrn--stage.lightning.force.com/lightning/r/Homeowner_Application__c/a3F4P000002DuLmUAK/view.
+This component can be viewed on any listing in your Dev Org or Cervello, to push it to your dev org just deploy the Apex Class, LWC component, Quick Action and Page Layout (in that order). Name is "Send Partner Info lwc" in the Quick Action Drop Down
 
