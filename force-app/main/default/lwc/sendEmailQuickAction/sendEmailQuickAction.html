@@ -54,7 +54,7 @@
                     label={buttonLabels.SEND}
                     title={buttonLabels.SEND}
                     onclick={handleClick}
-                    disabled={isSendButtonDisabled}
+                    disabled={selectedContact.length}
                     class="slds-m-left_x-small"
             ></lightning-button>
         </footer>

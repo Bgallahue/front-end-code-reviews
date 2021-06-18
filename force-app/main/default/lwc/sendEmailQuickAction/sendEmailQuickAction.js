@@ -19,7 +19,7 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
     // template data
     stepNumber = 0;
     selectedContact = null;
-    listingContacts = [];
+    listingContactsOptions = [];
     isLoading = false;
     @track
     email = {
@@ -41,46 +41,17 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
         return this.stepNumber === 1;
     }
 
-    get listingContactsOptions() {
-        return this.listingContacts.map(contact => {
-            return {
-                label: `${contact.Contact__r.Name} - ${contact.Role__c}`,
-                value: contact.Contact__r.Id
-            }
-        })
-    }
-
-    get isSendButtonDisabled(){
-        return this.selectedContact === null;
-    }
-
     //
     // LIFECYCLE
     //
     connectedCallback() {
         this.setEmailTemplateBody();
-    }
-
-    renderedCallback(){
-        if (this.listingContacts.length === 0){
-            this.getListingContacts();
-        }
+        this.getListingContacts();
     }
 
     //
     // METHODS
     //
-    getListingContacts() {
-        APEX_getListingContacts({
-            recordId: this.recordId
-        })
-            .then((data) => {
-                console.log(JSON.parse(JSON.stringify(data)));
-                this.listingContacts = data;
-            })
-            .catch(this.handleError);
-    }
-
     setEmailTemplateBody() {
         APEX_getEmailTemplateBody({
             templateName: EMAIL_TEMPLATE_OWNER_INTRODUCTION_TO_PARTNER_SERVICES
@@ -90,6 +61,21 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
             })
             .catch(this.handleError)
 
+    }
+
+    getListingContacts() {
+        APEX_getListingContacts({
+            recordId: this.recordId
+        })
+            .then((data) => {
+                this.listingContactsOptions = data.map(contact => {
+                    return {
+                        label: `${contact.Contact__r.Name} - ${contact.Role__c}`,
+                        value: contact.Contact__r.Id
+                    }
+                });
+            })
+            .catch(this.handleError);
     }
 
     sendEmail() {

@@ -26,23 +26,14 @@ public class Controller_sendEmailQuickAction
     }
 
     @AuraEnabled
-    public static void sendEmail(Id recordId, String templateName, String objectName, String fieldToWho, Boolean setAsActivity){
+    public static void sendEmail(Id recordId, String templateName, String toWho, Boolean setAsActivity){
 
         if (recordId == null){
             throw createException('Record Id is not defined');
         }
 
-        sObject so;
-        String query = 'SELECT Id,' + fieldToWho + ' FROM ' + objectName + ' WHERE Id = \'' + recordId + '\'';
-        so = Database.Query(query);
-        if ((Id) so.get(fieldToWho) == null) {
-           Map<String,Schema.SObjectType>schemaMap=Schema.getGlobalDescribe();
-           SObjectField field=(SObjectField)schemaMap.get(objectName).getDescribe().fields.getMap().get(fieldToWho);
-           throw createException(field.getDescribe().getLabel()+' is not populated');
-        }
-
         try {
-            List<Messaging.SingleEmailMessage> emails = EmailHandler.buildEmails((Id) so.get(fieldToWho), recordId, templateName, setAsActivity);
+            List<Messaging.SingleEmailMessage> emails = EmailHandler.buildEmails(toWho, recordId, templateName, setAsActivity);
             if (!emails.isEmpty()) {
                EmailHandler.sendEmails(emails, new Set<Id>{recordId});
             }
