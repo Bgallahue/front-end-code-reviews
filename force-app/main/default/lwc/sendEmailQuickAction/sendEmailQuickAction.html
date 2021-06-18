@@ -1,54 +1,62 @@
 <template>
-    <lightning-quick-action-panel class="slds-modal__content slds-expanded" header="Send Partner Info">
-        <template if:true={isFirstStep}>
+        <c-loading-spinner if:true={isLoading} type="absolute"></c-loading-spinner>
+    <template if:true={isFirstStep}>
+        <header class="slds-modal__header">
+            <h1 class="slds-text-heading_medium">Send Partner Info</h1>
+        </header>
+        <div class="slds-p-around_medium">
             <lightning-formatted-rich-text
                     value={email.body}
             ></lightning-formatted-rich-text>
-            <div slot="footer">
-                <lightning-button
-                        label={labels.cancel}
-                        title={labels.cancel}
-                        onclick={handleClick}
-                        class="slds-m-left_x-small"
-                ></lightning-button>
-                <lightning-button
-                        variant="brand"
-                        label={labels.next}
-                        title={labels.next}
-                        onclick={handleClick}
-                        class="slds-m-left_x-small"
-                ></lightning-button>
-            </div>
-        </template>
-        <template if:true={isSecondStep}>
+        </div>
+        <footer class="slds-modal__footer">
+            <lightning-button
+                    label={buttonLabels.CANCEL}
+                    title={buttonLabels.CANCEL}
+                    onclick={handleClick}
+                    class="slds-m-left_x-small"
+            ></lightning-button>
+            <lightning-button
+                    variant="brand"
+                    label={buttonLabels.NEXT}
+                    title={buttonLabels.NEXT}
+                    onclick={handleClick}
+                    class="slds-m-left_x-small"
+            ></lightning-button>
+        </footer>
+    </template>
+    <template if:true={isSecondStep}>
+        <header class="slds-modal__header">
+            <h1 class="slds-text-heading_medium">Send Partner Info</h1>
+        </header>
+        <div class="slds-p-around_medium">
             <lightning-combobox
                     label="Contact to Email"
                     value={selectedContact}
-                    options={getListingContactsOptions}
-                    onchange={handleChange}></lightning-combobox>
-            <div slot="footer">
-                <lightning-button
-                        label={labels.cancel}
-                        title={labels.cancel}
-                        onclick={handleClick}
-                        class="slds-m-left_x-small"
-                ></lightning-button>
-                <lightning-button
-                        label={labels.prev}
-                        title={labels.prev}
-                        onclick={handleClick}
-                        class="slds-m-left_x-small"
-                ></lightning-button>
-                <lightning-button
-                        variant="brand"
-                        label={labels.send}
-                        title={labels.send}
-                        onclick={handleClick}
-                        disabled={isSendButtonDisabled}
-                        class="slds-m-left_x-small"
-                ></lightning-button>
-            </div>
-        </template>
-    </lightning-quick-action-panel>
-
+                    options={listingContactsOptions}
+                    onchange={handleSelectContact}></lightning-combobox>
+        </div>
+        <footer class="slds-modal__footer">
+            <lightning-button
+                    label={buttonLabels.CANCEL}
+                    title={buttonLabels.CANCEL}
+                    onclick={handleClick}
+                    class="slds-m-left_x-small"
+            ></lightning-button>
+            <lightning-button
+                    label={buttonLabels.PREV}
+                    title={buttonLabels.PREV}
+                    onclick={handleClick}
+                    class="slds-m-left_x-small"
+            ></lightning-button>
+            <lightning-button
+                    variant="brand"
+                    label={buttonLabels.SEND}
+                    title={buttonLabels.SEND}
+                    onclick={handleClick}
+                    disabled={isSendButtonDisabled}
+                    class="slds-m-left_x-small"
+            ></lightning-button>
+        </footer>
+    </template>
 </template>

@@ -6,27 +6,27 @@ import APEX_getEmailTemplateBody from '@salesforce/apex/Controller_sendEmailQuic
 import APEX_sendEmail from '@salesforce/apex/Controller_sendEmailQuickAction.sendEmail'
 import APEX_getListingContacts from '@salesforce/apex/Controller_sendEmailQuickAction.getListingContacts'
 
+const EMAIL_TEMPLATE_OWNER_INTRODUCTION_TO_PARTNER_SERVICES = "Owner_Introduction_to_Partner_Services";
+const BUTTONS_LABELS = {
+    CANCEL: 'Cancel',
+    SEND: 'Send Partner Info',
+    NEXT: 'Next',
+    PREV: 'Previous'
+};
 export default class SendEmailQuickAction extends handleErrorMixin(LightningElement) {
     @api recordId;
-    @api emailTemplate="Owner_Introduction_to_Partner_Services";
-    @api objectName="Listing__c";
-    @api fieldToWho="Property_Owner__c";
-    @api setAsActivity = false;
+
     // template data
     stepNumber = 0;
     selectedContact = null;
-    @track listingContacts = [];
+    listingContacts = [];
+    isLoading = false;
     @track
     email = {
-        body: 'test body'
+        body: null
     }
 
-    labels = {
-        cancel: 'Cancel',
-        send: 'Send Partner Info',
-        next: 'Next',
-        prev: 'Previous'
-    };
+    buttonLabels = BUTTONS_LABELS;
     // service trackers
 
     //
@@ -41,10 +41,10 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
         return this.stepNumber === 1;
     }
 
-    get getListingContactsOptions() {
+    get listingContactsOptions() {
         return this.listingContacts.map(contact => {
             return {
-                label: `${contact.Contact__r.Name} ${contact.Role__c}`,
+                label: `${contact.Contact__r.Name} - ${contact.Role__c}`,
                 value: contact.Contact__r.Id
             }
         })
@@ -62,7 +62,6 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
     }
 
     renderedCallback(){
-        console.log('record id',this.recordId)
         if (this.listingContacts.length === 0){
             this.getListingContacts();
         }
@@ -84,7 +83,7 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
 
     setEmailTemplateBody() {
         APEX_getEmailTemplateBody({
-            templateName: this.emailTemplate
+            templateName: EMAIL_TEMPLATE_OWNER_INTRODUCTION_TO_PARTNER_SERVICES
         })
             .then(result => {
                 this.email.body = result.replace(']]>', '');
@@ -94,12 +93,12 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
     }
 
     sendEmail() {
+        isLoading = true;
         APEX_sendEmail({
             recordId: this.recordId,
-            templateName: this.emailTemplate,
-            objectName: this.objectName,
-            fieldToWho: this.fieldToWho,
-            setAsActivity: this.setAsActivity
+            templateName: EMAIL_TEMPLATE_OWNER_INTRODUCTION_TO_PARTNER_SERVICES,
+            toWho: this.selectedContact,
+            setAsActivity: false
         })
             .then(() => {
                 const event = new ShowToastEvent({
@@ -110,6 +109,7 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
             })
             .catch(this.handleError)
             .finally(() => {
+                    isLoading = false;
                     this.sendCancelEvent();
                 }
             )
@@ -123,14 +123,18 @@ export default class SendEmailQuickAction extends handleErrorMixin(LightningElem
     // TEMPLATE EVENTS HANDLERS
     //
     handleClick(event) {
-        if (event.target.label === this.labels.send) {
+        if (event.target.label === BUTTONS_LABELS.SEND) {
             this.sendEmail();
-        } else if (event.target.label === this.labels.next) {
+        } else if (event.target.label === BUTTONS_LABELS.NEXT) {
             this.stepNumber++;
-        } else if (event.target.label === this.labels.next) {
+        } else if (event.target.label === BUTTONS_LABELS.PREV) {
             this.stepNumber--;
         } else {
             this.sendCancelEvent();
         }
+    }
+
+    handleSelectContact(event){
+        this.selectedContact = event.detail.value;
     }
 }
