@@ -1,0 +1,117 @@
+<template>
+    <!-- ! FRONT PAGE -->
+    <button class="account-image-upload_button-icon" onclick={launchModal}>
+        <!-- Business Photo -->
+        <div if:true={imageURL} class="account-image-upload_account-image">
+            <img src={imageURL} alt="Account or User Image" />
+        </div>
+        <!-- USER SVG Icon-->
+        <span
+            if:false={imageURL}
+            class="account-image-upload_user-icon slds-icon_container slds-icon_container_circle slds-icon-action-user"
+        >
+            <svg class="slds-icon" xmlns="http://www.w3.org/2000/svg">
+                <use xlink:href={userSymbolURL}></use>
+            </svg>
+            <span class="slds-assistive-text">User Image Icon</span>
+        </span>
+        <!-- Camera SVG Icon-->
+        <span class="account-image-upload_camera-icon">
+            <svg xmlns="http://www.w3.org/2000/svg">
+                <use class="slds-icon" xlink:href={photoSymbolURL}></use>
+            </svg>
+            <span class="slds-assistive-text">User Image Icon</span>
+        </span>
+    </button>
+    <!-- !UPLOAD MODULE -->
+    <section
+        if:true={showModal}
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-1"
+        class="slds-modal slds-fade-in-open"
+    >
+        <div class="slds-modal__container slds-text-align_center">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Update Photo</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <c-loading-spinner if:true={showSpinner} type="overlay"></c-loading-spinner>
+                <div>
+                    <span class="account-image-upload_bold-text"> You can upload a JPG, GIF or PNG file. <br /> </span>
+                    <span>
+                        Maximum file size is 16 MB.
+                    </span>
+                </div>
+                <!-- Lightning File Upload (Desktop) -->
+                <div class="account-image-upload_center slds-m-vertical_large slds-show_medium">
+                    <div class="account-image-upload_butt-background"></div>
+                    <lightning-file-upload
+                        label="Upload Image"
+                        name="fileUploader"
+                        accept={acceptedFormats}
+                        record-id={accountId}
+                        onuploadfinished={handleFileInput}
+                    >
+                    </lightning-file-upload>
+                </div>
+                <!-- Lightning File Upload (Mobile) -->
+                <div class="slds-m-vertical_medium slds-hide_medium">
+                    <lightning-file-upload
+                        label="Upload Image"
+                        name="fileUploader"
+                        accept={acceptedFormats}
+                        record-id={accountId}
+                        onuploadfinished={handleFileInput}
+                    >
+                    </lightning-file-upload>
+                </div>
+                <!-- Business Photo -->
+                <div if:true={imageURL} class="account-image-upload_container">
+                    <div class="account-image-upload_img-overlay slds-p-vertical_xx-small">
+                        <span> Current Photo</span>
+                    </div>
+                    <img src={imageURL} alt="Business Account Image" />
+                </div>
+                <!-- User SVG Icon -->
+                <span if:false={imageURL} class="account-image-upload_user-icon slds-icon_container slds-icon-standard-people">
+                    <div class="account-image-upload_icon-overlay slds-p-vertical_xx-small">
+                        <span> Current Photo</span>
+                    </div>
+                    <svg class="slds-icon" xmlns="http://www.w3.org/2000/svg">
+                        <use xlink:href={userSymbolURL}></use>
+                    </svg>
+                    <span class="slds-assistive-text">Person Image Icon</span>
+                </span>
+            </div>
+
+            <footer class="slds-modal__footer slds-grid slds-wrap slds-grid_align-end">
+                <lightning-button
+                    label="Cancel"
+                    variant="neutral"
+                    class="tho-button_dark slds-order_1 slds-max-medium-order_2"
+                    onclick={initialCancel}
+                ></lightning-button>
+                <lightning-button
+                    label="Save"
+                    variant="brand"
+                    class="account-image-upload_save slds-order_2 slds-max-medium-order_1"
+                    onclick={save}
+                    disabled={saveDisabled}
+                ></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div if:true={showModal} class="slds-backdrop slds-backdrop_open"></div>
+    <!-- !Cancel Button Modal -->
+    <c-prompt
+        heading="Are You Sure?"
+        message="Your changes will not be saved"
+        cancel-label="cancel"
+        ok-label="yes, exit"
+        oncancel={cancelFeedback}
+        onok={cancel}
+    ></c-prompt>
+</template>
