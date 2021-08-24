@@ -1,7 +1,7 @@
 # Repo for Evolve Front End Code Reviews
 6/16/2021
 
-Component: sendEmailQuickAction
+Component: tripAssistCancellationDetails AND createStripeACHAccount
 
 Ticket Reference: https://evolvevrn.atlassian.net/browse/OD-1979
 
