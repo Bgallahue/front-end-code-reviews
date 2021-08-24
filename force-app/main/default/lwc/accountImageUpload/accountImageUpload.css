@@ -1,0 +1,123 @@
+.slds-button + .slds-button {
+    margin-left: 0;
+}
+
+/* IMAGE BUTTON */
+.account-image-upload_button-icon {
+    background-color: transparent;
+    border: none;
+    position: relative;
+}
+
+/* ACCOUNT PICTURE */
+.account-image-upload_account-image img {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    height: 15rem;
+    width: 15rem;
+}
+
+.account-image-upload_button-icon:hover .account-image-upload_account-image {
+    filter: brightness(50%);
+}
+
+/* USER ICON */
+
+.account-image-upload_user-icon svg {
+    height: 10rem;
+    width: 10rem;
+}
+
+.account-image-upload_user-icon .slds-icon {
+    margin: 2rem;
+}
+
+.account-image-upload_button-icon:hover .account-image-upload_user-icon {
+    filter: brightness(50%);
+}
+
+.account-image-upload_button-icon:hover .account-image-upload_user-icon-icon .slds-icon {
+    fill: lightgrey;
+}
+
+/* CAMERA ICON */
+
+.account-image-upload_camera-icon svg {
+    height: 7rem;
+    width: 7rem;
+}
+
+.account-image-upload_camera-icon {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.account-image-upload_button-icon:hover .account-image-upload_camera-icon {
+    opacity: 1;
+}
+
+/* USER UPLOAD PROCESS PHOTO */
+
+/* Image Container */
+.account-image-upload_container {
+    position: relative;
+    width: 19rem;
+    margin: auto;
+}
+
+.account-image-upload_container img {
+    width: 100%;
+}
+
+.account-image-upload_center {
+    display: flex;
+    justify-content: center;
+}
+
+.account-image-upload_bold-text {
+    font-weight: bold;
+}
+
+/* Overlays */
+
+.account-image-upload_icon-overlay {
+    text-align: center;
+    background-color: white;
+    opacity: 0.7;
+}
+
+.account-image-upload_img-overlay {
+    text-align: center;
+    background-color: white;
+    opacity: 0.7;
+    position: absolute;
+    width: 100%;
+}
+
+/* MISC */
+/* Save Button */
+.account-image-upload_save {
+    min-width: 104px;
+}
+@media (max-width: 767px) {
+    .account-image-upload_save {
+        margin-top: 0 !important;
+        margin-bottom: .5rem;
+    }
+}
+
+/* Upload Button Background */
+.account-image-upload_butt-background {
+    position: absolute;
+    background-color: white;
+    width: 305.031px;
+    height: 38px;
+    border-radius: 0.25rem;
+    margin-top: 30px;
+}
