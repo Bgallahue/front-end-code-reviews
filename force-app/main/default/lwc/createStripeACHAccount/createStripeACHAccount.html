@@ -1,0 +1,126 @@
+<template>
+    <c-loading-spinner if:true={isSpinnerShowing}></c-loading-spinner>
+    <p class="slds-text-heading_large slds-var-p-vertical_large">Payment account</p>
+    <p class="slds-var-m-bottom_small create-stripe-ach_text-container">
+        Guest payments will be released directly to your bank account 48 hours after the check-in date. Please provide your
+        checking account details for an easy, paperless deposit.
+    </p>
+    <div class="slds-grid slds-wrap slds-gutters_large" onchange={handleInput}>
+        <div
+            class="
+                slds-col
+                slds-size_1-of-1
+                slds-medium-size_1-of-3
+                slds-order_2
+                slds-medium-order_1
+                slds-var-m-top_medium
+                create-stripe-ach_text-container
+            "
+        >
+            <lightning-input
+                label="Routing Number"
+                required
+                name="routingNumber"
+                value={bankInformation.routingNumber}
+                type="text"
+                class="slds-var-m-bottom_medium"
+                pattern="[0-9]{9}"
+                message-when-pattern-mismatch="Routing number must be 9 digits and numbers only"
+            ></lightning-input>
+            <lightning-input
+                label="Account Number"
+                required
+                name="accountNumber"
+                value={bankInformation.accountNumber}
+                type="text"
+                class="slds-var-m-bottom_medium"
+                pattern="[0-9]*"
+                message-when-pattern-mismatch="Account Number can only be numbers"
+            ></lightning-input>
+            <lightning-input
+                label="Name on Account"
+                required
+                name="name"
+                value={bankInformation.name}
+                type="text"
+                class="slds-var-m-bottom_medium"
+            ></lightning-input>
+        </div>
+        <div class="slds-col slds-order_1 slds-medium-order_2 slds-var-m-top_small slds-var-p-top_small">
+            <img class="slds-size_1-of-1 slds-medium-size_large" src={bankAccountInformationPNG} alt="Bank Account Information" />
+        </div>
+    </div>
+
+    <div class="slds-grid slds-gutters slds-wrap slds-grid_align-spread slds-gutters slds-var-p-top_xx-large">
+        <div class="slds-col slds-max-small-size_1-of-1 slds-var-p-bottom_medium slds-show_small slds-order_3 slds-small-order_1">
+            <lightning-button
+                label="Save And Exit"
+                variant="neutral"
+                class="slds-max-small-size_1-of-1 tho-button_dark"
+                onclick={handleInitiateSave}
+            ></lightning-button>
+        </div>
+        <div
+            class="
+                slds-col slds-col_bump-left
+                slds-max-small-size_1-of-1
+                slds-var-p-bottom_medium
+                slds-order_2
+                slds-small-order_2
+            "
+        >
+            <lightning-button
+                label="Back"
+                variant="neutral"
+                class="tho-button_dark slds-max-small-size_1-of-1"
+                onclick={handleBack}
+            >
+            </lightning-button>
+        </div>
+        <div class="slds-col slds-max-small-size_1-of-1 slds-var-p-bottom_medium slds-order_1 slds-small-order_3">
+            <lightning-button
+                label="Save and Continue"
+                variant="brand"
+                class="slds-max-small-size_1-of-1"
+                onclick={handleInitiateSave}
+            >
+            </lightning-button>
+        </div>
+        <!-- Mobile only button link -->
+        <div
+            class="
+                slds-col
+                slds-max-small-size_1-of-1
+                slds-var-p-bottom_medium
+                slds-hide_small
+                slds-order_3
+                slds-small-order_1
+                slds-text-align_center
+            "
+        >
+            <button
+                class="
+                    slds-button
+                    slds-max-small-size_1-of-1
+                    tho-button_dark
+                    slds-text-align_center
+                    create-stripe-ach_button-link
+                "
+                onclick={handleInitiateSave}
+            >
+                Save and Exit
+            </button>
+        </div>
+    </div>
+    <div class="slds-p-top_medium slds-var-m-bottom_small">
+        <svg class="create-stripe-ach_stripe-logo" xmlns="http://www.w3.org/2000/svg">
+            <use xlink:href={stripeLogoSVG}></use>
+        </svg>
+        <svg class="create-stripe-ach_stripe-lock" xmlns="http://www.w3.org/2000/svg">
+            <use xlink:href={stripeLockSVG}></use>
+        </svg>
+    </div>
+    <p class="slds-var-m-bottom_small">
+        Blurb about how we’re super safe with your personal data and you dont need to worry about a thing
+    </p>
+</template>

@@ -1,9 +1,10 @@
 # Repo for Evolve Front End Code Reviews
 7/14/2021
 
-Component: tripAssistCancellationDetails AND createStripeACHAccount
+Component: tripAssistAppCancel AND createStripeACHAccount
 
-Ticket Reference: None, this is a prexisting component
+Ticket Reference: createStripeACHAccount (https://evolvevrn.atlassian.net/browse/AC-701 + https://evolvevrn.atlassian.net/browse/AC-702) 
+tripAssistAppCancel ()
 
 Front End Code Review Instructions: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1426980900/Front+End+Code+Reviews
 
@@ -12,29 +13,27 @@ Front End Documentation Reference: https://evolvevrn.atlassian.net/wiki/spaces/S
 
 Assignments:
 # HTML/CSS Cheat Sheet
-Lou Shropshire: #1 to #3
 
-Alex Popov: #4 to #6
+Bobby Gallahue: tripAssistAppCancel
+
+David Manhardt: createStripeACHAccount
 
 # Javascript Cheat Sheet
 
-Bobby Gallahue: #1 to #5
+Lou Shropshire: createStripeACHAccount
 
-David Manhardt: #6 to #9
+Alex Popov: tripAssistAppCancel
 
 # Database Cheat Sheet
 
-Ilya Toloknov: #1 to #3
+Ilya Toloknov: tripAssistAppCancel
 
-Ali Jameel: #4 to #5
+Ali Jameel: createStripeACHAccount
 
 # Naming Convention Cheat Sheet
 
-Artem Hazim: #1 to #5
+Artem Hazim: createStripeACHAccount
 
-Anton Kozhemyakin: #6 to #9
+Anton Kozhemyakin: tripAssistAppCancel
 
-
-# Instructions
-This component can be viewed in the Partner Community under the User Profile. Just click to add a new Image
 
