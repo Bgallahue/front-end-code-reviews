@@ -1,7 +1,7 @@
 # Repo for Evolve Front End Code Reviews
 7/14/2021
 
-Component: accountImageUpload
+Component: tripAssistCancellationDetails AND createStripeACHAccount
 
 Ticket Reference: None, this is a prexisting component
 
