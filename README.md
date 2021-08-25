@@ -20,15 +20,15 @@ David Manhardt: createStripeACHAccount
 
 # Javascript Cheat Sheet
 
-Lou Shropshire: createStripeACHAccount
-
-Alex Popov: tripAssistAppCancel
-
-# Database Cheat Sheet
+Alex Popov: createStripeACHAccount
 
 Ilya Toloknov: tripAssistAppCancel
 
-Ali Jameel: createStripeACHAccount
+# Database Cheat Sheet
+
+Ali Jameel: tripAssistAppCancel
+
+Lou Shropshire: createStripeACHAccount
 
 # Naming Convention Cheat Sheet
 
