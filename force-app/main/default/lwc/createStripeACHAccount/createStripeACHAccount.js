@@ -1,6 +1,6 @@
 import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { handleErrorMixin } from 'c/utils';
+import { handleErrorMixin, handleChangeFactory } from 'c/utils';
 import APEX_createBankAccount from '@salesforce/apex/Controller_CreateStripeACHAccount.createBankAccount';
 import OB_RESOURCES_URL from '@salesforce/resourceUrl/OB_Resources';
 import STRIPE_LOGO_SVG_URL from '@salesforce/resourceUrl/stripeLogo';
@@ -38,10 +38,10 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
     //
     // TEMPLATE EVENTS HANDLERS
     //
-
-    handleInput(event) {
-        this.bankInformation[event.target.name] = event.target.value;
-    }
+    
+    handleChange = handleChangeFactory({
+        propertyDefinition: event => this.bankInformation
+    });
 
     handleBack() {
         this.dispatchEvent(new CustomEvent('back'));

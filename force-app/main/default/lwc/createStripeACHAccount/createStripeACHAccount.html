@@ -5,7 +5,7 @@
         Guest payments will be released directly to your bank account 48 hours after the check-in date. Please provide your
         checking account details for an easy, paperless deposit.
     </p>
-    <div class="slds-grid slds-wrap slds-gutters_large" onchange={handleInput}>
+    <div class="slds-grid slds-wrap slds-gutters_large" onchange={handleChange}>
         <div
             class="
                 slds-col
@@ -74,8 +74,7 @@
                 variant="neutral"
                 class="tho-button_dark slds-max-small-size_1-of-1"
                 onclick={handleBack}
-            >
-            </lightning-button>
+            ></lightning-button>
         </div>
         <div class="slds-col slds-max-small-size_1-of-1 slds-var-p-bottom_medium slds-order_1 slds-small-order_3">
             <lightning-button
@@ -83,8 +82,7 @@
                 variant="brand"
                 class="slds-max-small-size_1-of-1"
                 onclick={handleInitiateSave}
-            >
-            </lightning-button>
+            ></lightning-button>
         </div>
         <!-- Mobile only button link -->
         <div
