@@ -1,6 +1,6 @@
 import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { handleErrorMixin, unproxy } from 'c/utils';
+import { handleErrorMixin } from 'c/utils';
 import APEX_createBankAccount from '@salesforce/apex/Controller_CreateStripeACHAccount.createBankAccount';
 import OB_RESOURCES_URL from '@salesforce/resourceUrl/OB_Resources';
 import STRIPE_LOGO_SVG_URL from '@salesforce/resourceUrl/stripeLogo';
@@ -30,16 +30,10 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
 
 
     //
-    // LIFECYCLE
-    //
-
-    //
     // API METHODS
     //
 
-    //
-    // PRIVATE METHODS
-    //
+
 
     //
     // TEMPLATE EVENTS HANDLERS
@@ -54,24 +48,19 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
     }
 
     handleInitiateSave() {
-        this.isSpinnerShowing = true;
-
+        // valudation
         const allValid = [...this.template.querySelectorAll('lightning-input')].reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
 
         if (!allValid) {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    message: 'Please correct the errors on the Bank Account inputs and try again',
-                    variant: 'Error'
-                })
-            );
-            this.isSpinnerShowing = false;
+            this.handleError('Please correct the errors on the Bank Account inputs and try again');
             return;
         }
 
+        // call apex
+        this.isSpinnerShowing = true;
         APEX_createBankAccount({
             bankAccount: this.bankInformation
         })
@@ -93,8 +82,7 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
                         })
                     );
                 }
-                this.bankInformation = unproxy(BANKINFO);
-                console.log('gets here');
+                this.bankInformation = {...BANKINFO};
                 this.dispatchEvent(new CustomEvent('blah', { detail: 3 }));
             })
             .catch(this.handleError)
@@ -103,7 +91,4 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
             });
     }
 
-    //
-    // EVENTS
-    //
 }
