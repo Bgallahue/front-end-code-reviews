@@ -33,38 +33,13 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
     // API METHODS
     //
 
-
-
-    //
-    // TEMPLATE EVENTS HANDLERS
-    //
-    
-    handleChange = handleChangeFactory({
-        propertyDefinition: event => this.bankInformation
-    });
-
-    handleBack() {
-        this.dispatchEvent(new CustomEvent('back'));
-    }
-
-    handleInitiateSave() {
-        // valudation
-        const allValid = [...this.template.querySelectorAll('lightning-input')].reduce((validSoFar, inputCmp) => {
-            inputCmp.reportValidity();
-            return validSoFar && inputCmp.checkValidity();
-        }, true);
-
-        if (!allValid) {
-            this.handleError('Please correct the errors on the Bank Account inputs and try again');
-            return;
-        }
-
-        // call apex
+    createBankAccount() {
         this.isSpinnerShowing = true;
+
         APEX_createBankAccount({
             bankAccount: this.bankInformation
         })
-            .then((data) => {
+            .then(data => {
                 if (data.status !== 'errored') {
                     this.dispatchEvent(
                         new ShowToastEvent({
@@ -89,6 +64,38 @@ export default class CreateStripeACHAccount extends handleErrorMixin(LightningEl
             .finally(() => {
                 this.isSpinnerShowing = false;
             });
+
+    }
+
+
+
+    //
+    // TEMPLATE EVENTS HANDLERS
+    //
+    
+    handleChange = handleChangeFactory({
+        propertyDefinition: event => this.bankInformation
+    });
+
+    handleBack() {
+        this.dispatchEvent(new CustomEvent('back'));
+    }
+
+    handleInitiateSave() {
+        // valudation
+        const allValid = this.template.querySelectorAll('lightning-input').reduce((validSoFar, inputCmp) => {
+            inputCmp.reportValidity();
+            return validSoFar && inputCmp.checkValidity();
+        }, true);
+
+        if (!allValid) {
+            this.handleError('Please correct the errors on the Bank Account inputs and try again');
+            return;
+        }
+
+        // call apex
+        this.createBankAccount();
+
     }
 
 }
