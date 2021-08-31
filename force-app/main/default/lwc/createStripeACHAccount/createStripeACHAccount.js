@@ -11,23 +11,23 @@ const BANKINFO = {
     routingNumber: ''
 };
 
+const bankAccountInformationPNG = OB_RESOURCES_URL + '/img/BankAccountInformation.png';
+const stripeLogoSVG = STRIPE_LOGO_SVG_URL + '#logo';
+const stripeLockSVG = STRIPE_LOGO_SVG_URL + '#lock';
+
+
+
 export default class CreateStripeACHAccount extends handleErrorMixin(LightningElement) {
-    @track bankInformation = unproxy(BANKINFO);
+    @track bankInformation = {...BANKINFO};
     isSpinnerShowing = false;
 
-    //
-    // GETTERS
-    //
+    // static
+    $ = {
+        bankAccountInformationPNG,
+        stripeLogoSVG,
+        stripeLockSVG
+    }
 
-    get bankAccountInformationPNG() {
-        return OB_RESOURCES_URL + '/img/BankAccountInformation.png';
-    }
-    get stripeLogoSVG() {
-        return STRIPE_LOGO_SVG_URL + '#logo';
-    }
-    get stripeLockSVG() {
-        return STRIPE_LOGO_SVG_URL + '#lock';
-    }
 
     //
     // LIFECYCLE
