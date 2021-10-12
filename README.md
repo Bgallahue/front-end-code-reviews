@@ -1,10 +1,9 @@
 # Repo for Evolve Front End Code Reviews
-7/14/2021
+10/12/2021
 
-Component: tripAssistAppCancel AND createStripeACHAccount
+Component: referralCommissionRewardDisplay
 
-Ticket Reference: createStripeACHAccount (https://evolvevrn.atlassian.net/browse/AC-701 + https://evolvevrn.atlassian.net/browse/AC-702) 
-tripAssistAppCancel ()
+Ticket Reference: 
 
 Front End Code Review Instructions: https://evolvevrn.atlassian.net/wiki/spaces/SFDC/pages/1426980900/Front+End+Code+Reviews
 
@@ -14,26 +13,20 @@ Front End Documentation Reference: https://evolvevrn.atlassian.net/wiki/spaces/S
 Assignments:
 # HTML/CSS Cheat Sheet
 
-Bobby Gallahue: tripAssistAppCancel
-
-David Manhardt: createStripeACHAccount
+David Manhardt
 
 # Javascript Cheat Sheet
 
-Alex Popov: createStripeACHAccount
-
-Ilya Toloknov: tripAssistAppCancel
+Alex Popov
 
 # Database Cheat Sheet
 
-Ali Jameel: tripAssistAppCancel
+Ali Jameel
 
-Lou Shropshire: createStripeACHAccount
+Lou Shropshire
 
 # Naming Convention Cheat Sheet
 
-Artem Hazim: createStripeACHAccount
-
-Anton Kozhemyakin: tripAssistAppCancel
+Anton Kozhemyakin
 
 
