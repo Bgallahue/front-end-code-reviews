@@ -168,7 +168,7 @@ export default class TripAssistAppCancel extends handleErrorMixin(LightningEleme
         this.isLoading = true;
         APEX_cancelBooking({
             bookingId: this.recordId,
-            cancellationFault: this.form.reason ? this.form.reason : "Traveler: Change In Plans",
+            cancellationFault: this.form.reason ? this.form.reason : DEFAULT_REASONS.GUEST,
             responsibleValue: this.responsibleValue,
             isFullProcess
         })

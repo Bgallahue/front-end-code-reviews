@@ -81,14 +81,18 @@ export const navigateToTripAssistMixin = LWC => class extends NavigationMixin(ha
 // refund wrapper interface
 
 export const getRefundAmountCopy = (cash, ftc) => {
-    if (!cash && !ftc) return 'If cancelled now, the guest will be nothing refunded or issued.';
+    let refundCopy
+    if (!cash && !ftc){
+        refundCopy = 'will be nothing refunded or issued';
+    } else {
+        refundCopy = [
+            cash && `will be refunded <b>${format(CURRENCY_FORMAT, cash)}</b> to the <b>credit card</b> on file`,
+            ftc && `will be issued <b>${format(CURRENCY_FORMAT, ftc)}</b> in <b>FTC</b>`
+        ].filter(t => !!t)
+        .join(' and ')
+    } 
 
-    return 'If cancelled now, the guest '+
-    [
-        cash && `will be refunded <b>${format(CURRENCY_FORMAT, cash)}</b> to the <b>credit card</b> on file`,
-        ftc && `will be issued <b>${format(CURRENCY_FORMAT, ftc)}</b> in <b>FTC</b>`
-    ].filter(t => !!t).join(' and ')
-    +'.';
+    return `If cancelled now, the guest ${refundCopy}.`
 }
 export const getRefundTypeCopy = rules => {
     let copy = 'This booking is not eligible for a refund or FTC.';
