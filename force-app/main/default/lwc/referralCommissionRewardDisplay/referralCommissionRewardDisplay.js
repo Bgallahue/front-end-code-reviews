@@ -28,6 +28,7 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
 
     connectedCallback() {
         this.loading = true;
+
         Promise.all([
             APEX_loadRelatedRecords({
                 fields: 'Name, RecordType.Name, Account__r.Id, Account__r.Name, Initial_Amount__c, Reason__c, AllocationAppliedStatus__c, CreatedDate',
@@ -58,11 +59,10 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
             }),
         ])
             .then(([credits, tasks, transactions]) => {
-                this.data = [];
-                credits[this.recordId]
-                    .filter(credit => credit.RecordType.Name === 'Credit')
-                    .forEach(credit => {
-                        this.data.push({
+                this.data = [
+                    ...credits[this.recordId]
+                        .filter(credit => credit.RecordType.Name === 'Credit')
+                        .map(credit => ({
                             Id: credit.Id,
                             Type: 'Credit/Debit',
                             RewardRecordUrl: `/lightning/r/Credit_Debit__c/${credit.Id}/view`,
@@ -73,12 +73,11 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
                             Description: credit.Reason__c,
                             Status: credit.AllocationAppliedStatus__c,
                             CreatedDate: credit.CreatedDate
-                        });
-                    });
-                tasks[this.recordId]
-                    .filter(task => task.Subject === 'Partner Stripe Account Error')
-                    .forEach(task => {
-                        this.data.push({
+                        })),
+
+                    ...tasks[this.recordId]
+                        .filter(task => task.Subject === 'Partner Stripe Account Error')
+                        .map(task => ({
                             Id: task.Id,
                             Type: 'Task',
                             RewardRecordUrl: `/lightning/r/Task/${task.Id}/view`,
@@ -87,11 +86,10 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
                             Description: task.Subject,
                             Status: task.Status,
                             CreatedDate: task.CreatedDate,
-                        });
-                    });
-                transactions[this.recordId]
-                    .forEach(tr => {
-                        this.data.push({
+                        })),
+
+                    ...transactions[this.recordId]
+                        .map(tr => ({
                             Id: tr.Id,
                             Type: 'Transaction',
                             RewardRecordUrl: `/lightning/r/bt_stripe__Transaction__c/${tr.Id}/view`,
@@ -102,8 +100,8 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
                             Description: tr.Reason_Type__c,
                             Status: tr.bt_stripe__Transaction_Status__c,
                             CreatedDate: tr.CreatedDate
-                        });
-                    });
+                        }))
+                ];
             })
             .catch(this.handleError)
             .finally(() => {
