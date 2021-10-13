@@ -4,7 +4,7 @@ import CURRENCY from '@salesforce/i18n/currency';
 import APEX_loadRelatedRecords from "@salesforce/apex/Controller_FilteredRelatedList.loadRelatedRecords";
 import {handleErrorMixin} from "c/utils";
 
-const columns = [
+const COLUMNS = [
     {label: 'Type', fieldName: 'Type', type: 'text'},
     {label: 'Reward Record', fieldName: 'RewardRecordUrl', type: 'url', typeAttributes: {label: { fieldName: 'Name' },
             target: '_blank'}},
@@ -21,7 +21,7 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
     @api recordId;
 
     @track data = [];
-    columns = columns;
+    COLUMNS = COLUMNS;
 
     @track state = {
         loading: false
