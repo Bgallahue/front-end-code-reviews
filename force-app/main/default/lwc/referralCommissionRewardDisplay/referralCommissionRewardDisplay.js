@@ -1,7 +1,6 @@
 import { api, track, LightningElement } from 'lwc';
-import LOCALE from '@salesforce/i18n/locale';
-import CURRENCY from '@salesforce/i18n/currency';
 import { handleErrorMixin } from "c/utils";
+import { CURRENCY_FORMAT, format } from 'c/formatter';
 import APEX_loadRelatedRecords from "@salesforce/apex/Controller_FilteredRelatedList.loadRelatedRecords";
 
 const COLUMNS = [
@@ -70,7 +69,7 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
                             Name: credit.Name,
                             AccountUrl: credit.Account__r ? `/lightning/r/Account/${credit.Account__r?.Id}/view` : '',
                             AccountName: credit.Account__r?.Name,
-                            Amount: this.formatCurrency(credit.Initial_Amount__c),
+                            Amount: format(CURRENCY_FORMAT, credit.Initial_Amount__c),
                             Description: credit.Reason__c,
                             Status: credit.AllocationAppliedStatus__c,
                             CreatedDate: credit.CreatedDate
@@ -99,7 +98,7 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
                             Name: tr.Name,
                             AccountUrl: tr.bt_stripe__Related_Account__r ? `/lightning/r/Account/${tr.bt_stripe__Related_Account__r?.Id}/view` : '',
                             AccountName: tr.bt_stripe__Related_Account__r?.Name,
-                            Amount: this.formatCurrency(tr.bt_stripe__Amount__c),
+                            Amount: format(CURRENCY_FORMAT, tr.bt_stripe__Amount__c),
                             Description: tr.Reason_Type__c,
                             Status: tr.bt_stripe__Transaction_Status__c,
                             CreatedDate: tr.CreatedDate
@@ -110,13 +109,5 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
             .finally(() => {
                 this.loading = false;
             });
-    }
-
-    formatCurrency(amount) {
-        return new Intl.NumberFormat(LOCALE, {
-            style: 'currency',
-            currency: CURRENCY,
-            currencyDisplay: 'symbol'
-        }).format(amount);
     }
 }
