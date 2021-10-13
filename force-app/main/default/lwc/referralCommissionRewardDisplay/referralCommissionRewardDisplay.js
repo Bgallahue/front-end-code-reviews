@@ -1,8 +1,8 @@
-import {api, track, LightningElement} from 'lwc';
+import { api, track, LightningElement } from 'lwc';
 import LOCALE from '@salesforce/i18n/locale';
 import CURRENCY from '@salesforce/i18n/currency';
+import { handleErrorMixin } from "c/utils";
 import APEX_loadRelatedRecords from "@salesforce/apex/Controller_FilteredRelatedList.loadRelatedRecords";
-import {handleErrorMixin} from "c/utils";
 
 const COLUMNS = [
     {label: 'Type', fieldName: 'Type', type: 'text'},
@@ -17,18 +17,18 @@ const COLUMNS = [
 ];
 
 export default class ReferralCommissionRewardDisplay extends handleErrorMixin(LightningElement) {
-
     @api recordId;
 
-    @track data = [];
+    // static
     COLUMNS = COLUMNS;
 
-    @track state = {
-        loading: false
-    };
+    // data
+    @track data = [];
+    loading = false;
+
 
     connectedCallback() {
-        this.state.loading = true;
+        this.loading = true;
         Promise.all([
             APEX_loadRelatedRecords({
                 fields: 'Name, RecordType.Name, Account__r.Id, Account__r.Name, Initial_Amount__c, Reason__c, AllocationAppliedStatus__c, CreatedDate',
@@ -108,7 +108,7 @@ export default class ReferralCommissionRewardDisplay extends handleErrorMixin(Li
             })
             .catch(this.handleError)
             .finally(() => {
-                this.state.loading = false;
+                this.loading = false;
             });
     }
 
