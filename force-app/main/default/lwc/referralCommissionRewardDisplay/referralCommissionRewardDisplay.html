@@ -1,9 +1,13 @@
 <template>
     <lightning-card variant="narrow">
-        <c-loading-spinner if:true={state.loading} type="absolute"></c-loading-spinner>
+        <c-loading-spinner if:true={loading} type="absolute"></c-loading-spinner>
         <div class="slds-p-around_small">
-            <lightning-datatable key-field="id" data={data} columns={columns}
-                                 hide-checkbox-column></lightning-datatable>
+            <lightning-datatable
+                key-field="id"
+                data={data}
+                columns={COLUMNS}
+                hide-checkbox-column
+            ></lightning-datatable>
         </div>
     </lightning-card>
 </template>
